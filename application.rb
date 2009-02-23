@@ -10,7 +10,7 @@ require 'models/message'
 require 'models/user'
 require 'sinatra'
 
-DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/db/chat.db") 
+DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/db/chat.sqlite3") 
 DataMapper.auto_upgrade!
 
 enable :sessions
