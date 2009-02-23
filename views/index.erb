@@ -1,0 +1,23 @@
+<% if !@user.nil? && !@user.errors.empty? %>
+  <div id="errors">
+    <ul>
+      <% for error in @user.errors %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+<h1 id="title">Bienvenido a SinChat!</h1>
+<div id="welcomeMessage">
+  <span class="message">Ingresa tu nombre para empezar el Chat.</span>
+</div>
+<br />
+<div id="loginContainer">
+  <form action="/" method="post" accept-charset="utf-8">
+    <label for="username">Nombre:</label><br />
+    <input type="text" name="username" value="" id="username"/>
+    <label for="room">Sala:</label><br />
+    <input type="text" name="room" value="" id="chatRoom"/>
+    <p id="loginSubmit"><input type="submit" value="Continuar &rarr;"/></p>
+  </form>
+</div>

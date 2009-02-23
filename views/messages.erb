@@ -1,0 +1,6 @@
+<% for message in @messages %>
+  <li class="message" id=<%= "#{message.id}" %>>
+    <span class="from"><%= message.from %> dice:</span>
+    <span class="messageBody"><%= message.body %></span>
+  </li>
+<% end %>
