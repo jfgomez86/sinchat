@@ -10,8 +10,8 @@ require 'models/message'
 require 'models/user'
 require 'sinatra'
 
-DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/db/chat.sqlite3") 
-#DataMapper.setup(:default, 'postgres://localhost/dm_chat')
+#DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/db/chat.sqlite3") 
+DataMapper.setup(:default, 'postgres://localhost/dm_chat')
 #DataMapper.auto_upgrade!
 
 enable :sessions
