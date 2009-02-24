@@ -4,7 +4,7 @@ module Smileys
     "^_^"     =>    "2.gif",
     "-_-"     =>    "3.gif",
     ":("      =>    "4.gif",
-    "'-_-"    =>    "5.gif",
+    "'-.-"    =>    "5.gif",
     ":D"      =>    "6.gif",
     "o.o"     =>    "7.gif",
     "xD"      =>    "8.gif",
@@ -23,7 +23,7 @@ module Smileys
     "lol"     =>    "21.gif",
     ":s"     =>    "22.gif",
     "<3"     =>    "23.gif",
-    ":'('"     =>    "24.gif",
+    ":'("     =>    "24.gif",
     ":/"     =>    "25.gif",
     "(?)"     =>    "26.gif",
     "(!)"     =>    "27.gif",
@@ -40,7 +40,7 @@ module Smileys
   end
 
   def get_img_tag_for(smiley)
-    img_tag = "<img alt='#{smiley}' title='#{smiley}' src='#{get_uri_for(smiley)}' />"
+    img_tag = "<img alt='#{smiley.gsub("'", "")}' title='#{smiley.gsub("'", "")}' src='#{get_uri_for(smiley)}' />"
     return img_tag
   end
 
