@@ -1,5 +1,5 @@
 #Dir[File.join(File.dirname(__FILE__),"/vendor/*")].each do |l|
-  #$:.unshift "#{File.expand_path(l)}/lib"
+#$:.unshift "#{File.expand_path(l)}/lib"
 #end 
 
 require 'rubygems'
@@ -11,13 +11,32 @@ require 'models/user'
 require 'sinatra'
 
 #DataMapper.setup(:default, "sqlite3::memory:") 
-DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/chat.sqlite3") 
+#DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/chat.sqlite3") 
+DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/development.sqlite3"))
 DataMapper.auto_upgrade!
 
 enable :sessions
 
-Thread.new do
-  while true
+unless defined?EventMachine
+  Thread.new do
+    while true
+      Chat.all.each do |chat|
+        if chat.users.count > 0
+          chat.users.each do |user|
+            if Time.now - user.last_poll.to_time > 60
+              user.destroy
+            end
+          end
+        else 
+          chat.messages.destroy!
+          chat.destroy
+        end
+      end
+      sleep(60)
+    end
+  end
+else
+  EventMachine::add_periodic_timer (60) do
     Chat.all.each do |chat|
       if chat.users.count > 0
         chat.users.each do |user|
@@ -30,7 +49,6 @@ Thread.new do
         chat.destroy
       end
     end
-    sleep(60)
   end
 end
 
