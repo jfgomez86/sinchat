@@ -20,34 +20,27 @@ enable :sessions
 unless defined?EventMachine
   Thread.new do
     while true
-      Chat.all.each do |chat|
-        if chat.users.count > 0
-          chat.users.each do |user|
-            if Time.now - user.last_poll.to_time > 60
-              user.destroy
-            end
-          end
-        else 
-          chat.messages.destroy!
-          chat.destroy
-        end
-      end
+      clean_chat_rooms
       sleep(60)
     end
   end
 else
   EventMachine::add_periodic_timer(60) do
-    Chat.all.each do |chat|
-      if chat.users.count > 0
-        chat.users.each do |user|
-          if Time.now - user.last_poll.to_time > 60
-            user.destroy
-          end
+    clean_chat_rooms
+  end
+end
+
+def clean_chat_rooms
+  Chat.all.each do |chat|
+    if chat.users.count > 0
+      chat.users.each do |user|
+        if Time.now - user.last_poll.to_time > 60
+          user.destroy
         end
-      else 
-        chat.messages.destroy!
-        chat.destroy
       end
+    else 
+      chat.messages.destroy!
+      chat.destroy
     end
   end
 end
