@@ -121,3 +121,9 @@ h1 {
   font-size:0.85em;
   background:#afafaf;
 }
+
+.last_poll {
+  font-size:0.75em;
+  color:#efefef;
+  font-family: Arial;
+}

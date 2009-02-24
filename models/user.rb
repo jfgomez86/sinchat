@@ -7,6 +7,7 @@ class User
     :messages => {
                   :presence => "El nombre no puede estar en blanco."
     }
+  property  :last_poll, DateTime
 
   belongs_to :chat 
   has n, :messages

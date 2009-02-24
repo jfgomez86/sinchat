@@ -10,14 +10,29 @@ require 'models/message'
 require 'models/user'
 require 'sinatra'
 
-#DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/db/chat.sqlite3") 
-#DataMapper.setup(:default, 'postgres://localhost/dm_chat')
-#DataMapper.setup(:default, {:database => 'mysql://SQL06.FREEMYSQL.NET/dmchat', :username => "lonecat", :password => "62270767"})
-#DataMapper.setup(:default, 'mysql://lonecat:62270767@SQL06.FREEMYSQL.NET/dmchat')
-DataMapper.setup(:default, "sqlite3::memory:") 
+#DataMapper.setup(:default, "sqlite3::memory:") 
+DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/chat.sqlite3") 
 DataMapper.auto_upgrade!
 
 enable :sessions
+
+Thread.new do
+  while true
+    Chat.all.each do |chat|
+      if chat.users.count > 0
+        chat.users.each do |user|
+          if Time.now - user.last_poll.to_time > 60
+            user.destroy
+          end
+        end
+      else 
+        chat.messages.destroy!
+        chat.destroy
+      end
+    end
+    sleep(60)
+  end
+end
 
 get '/' do
   erb :index
@@ -25,6 +40,7 @@ end
 
 post '/' do
   @user = User.new(:name => params[:username])
+  @user.last_poll = Time.now
   if @user.save 
     session[:user_id] = @user.id
     redirect "/chat/#{params[:room]}"
@@ -35,19 +51,19 @@ end
 
 get '/chat/' do
   if @user = User.get(session[:user_id])
-    @chat = Chat.new
+    @chat = Chat.new :name => (rand*100000).to_i.to_s
     @chat.users << @user
     @chat.save
-    erb :chat
+    redirect "/chat/#{@chat.name}"
   else 
     redirect '/'
   end
 end
 
-get '/chat/:id' do
+get '/chat/:name' do
   if @user = User.get(session[:user_id])
-    unless @chat = Chat.get(params[:id])
-      @chat = Chat.create
+    unless @chat = Chat.first(:name => params[:name])
+      @chat = Chat.create(:name => params[:name])
     end
     unless @chat.users.member? @user
       @chat.users << @user
@@ -59,21 +75,28 @@ get '/chat/:id' do
   end
 end
 
-get '/chat/:id/messages/:message_id' do
+get '/chat/:name/messages/:message_id' do
   @from_message = params[:message_id] || 0
-  @chat = Chat.get(params[:id])
+  @chat = Chat.first(:name => params[:name])
   @messages = @chat.messages.all(:id.gt => @from_message)
   erb :messages, :layout => false
 end
 
-post '/chat/:id/messages/new' do
-  @chat = Chat.get(params[:id])
+post '/chat/:name/messages/new' do
+  @chat = Chat.first(:name => params[:name])
   @message_body = params[:message_body]
   @message = @chat.messages.create(:body => @message_body, :user_id => session[:user_id])
 end
 
-get '/chat/:id/users' do
-  @chat = Chat.get(params[:id])
+get '/chat/:name/users' do
+  @chat = Chat.first(:name => params[:name])
   @users = @chat.users
+  @user = User.get(session[:user_id])
+  @user.update_attributes(:last_poll => Time.now)
   erb :users, :layout => false
+end
+
+post '/chat/logout' do
+  @user = User.get(session[:user_id])
+  @user.destroy
 end

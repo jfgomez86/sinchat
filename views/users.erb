@@ -1,5 +1,5 @@
 <ul>
   <% for user in @users %>
-    <li class="user"><%= user.name %></li>
+    <li class="user"><%= user.name %> <span class="last_poll"><%= user.last_poll.strftime("%H:%M") %></span></li>
   <% end %>
 </ul>
