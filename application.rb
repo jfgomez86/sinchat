@@ -1,8 +1,8 @@
-Dir[File.join(File.dirname(__FILE__),"/vendor/*")].each do |l|
-  $:.unshift "#{File.expand_path(l)}/lib"
-end 
+#Dir[File.join(File.dirname(__FILE__),"/vendor/*")].each do |l|
+  #$:.unshift "#{File.expand_path(l)}/lib"
+#end 
 
-#require 'rubygems'
+require 'rubygems'
 require 'dm-core'
 require 'dm-validations'
 require 'models/chat'
@@ -11,8 +11,11 @@ require 'models/user'
 require 'sinatra'
 
 #DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/db/chat.sqlite3") 
-DataMapper.setup(:default, 'postgres://localhost/dm_chat')
-#DataMapper.auto_upgrade!
+#DataMapper.setup(:default, 'postgres://localhost/dm_chat')
+#DataMapper.setup(:default, {:database => 'mysql://SQL06.FREEMYSQL.NET/dmchat', :username => "lonecat", :password => "62270767"})
+#DataMapper.setup(:default, 'mysql://lonecat:62270767@SQL06.FREEMYSQL.NET/dmchat')
+DataMapper.setup(:default, "sqlite3::memory:") 
+DataMapper.auto_upgrade!
 
 enable :sessions
 
