@@ -8,10 +8,10 @@ require 'dm-validations'
 require 'models/chat'
 require 'models/message'
 require 'models/user'
+require 'helpers'
 require 'sinatra'
 
 #DataMapper.setup(:default, "sqlite3::memory:") 
-#DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/chat.sqlite3") 
 DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/development.sqlite3"))
 DataMapper.auto_upgrade!
 
@@ -33,10 +33,8 @@ enable :sessions
 def clean_chat_rooms
   Chat.all.each do |chat|
     if chat.users.size > 0 #Array.size, heroku doesn't support Array.count
-      chat.users.each do |user|
-        if Time.now - user.last_poll.to_time > 60
-          user.destroy
-        end
+      chat.users.each do |user| 
+        user.destroy if Time.now - user.last_poll.to_time > 60
       end
     else 
       chat.messages.destroy!
@@ -95,7 +93,7 @@ end
 
 post '/chat/:name/messages/new' do
   @chat = Chat.first(:name => params[:name])
-  @message_body = params[:message_body]
+  @message_body = parse_smileys params[:message_body]
   @message = @chat.messages.create(:body => @message_body, :user_id => session[:user_id])
 end
 

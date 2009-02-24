@@ -1,6 +1,7 @@
 <% for message in @messages %>
   <li class="message" id=<%= "#{message.id}" %>>
-    <span class="from"><%= message.from %> dice:</span>
+    <span class="time_ago"><%= message.created_at.strftime("%H:%M") %></span>
+    <span class="from">&lt;<span class="username" style=<%= "color:#{message.usercolor}" %>><%= message.from %></span>&gt; dice:</span>
     <span class="messageBody"><%= message.body %></span>
   </li>
 <% end %>

@@ -127,3 +127,20 @@ h1 {
   color:#efefef;
   font-family: Arial;
 }
+
+.time_ago {
+  font-size:0.45em;
+  color:#7f7f7f;
+}
+
+.from {
+  font-size: 0.65em;
+}
+
+.username {
+  font-size: 1.4em;
+}
+
+.messageBody {
+  font-size:14px;
+}
