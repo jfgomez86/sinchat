@@ -36,7 +36,7 @@ unless defined?EventMachine
     end
   end
 else
-  EventMachine::add_periodic_timer (60) do
+  EventMachine::add_periodic_timer(60) do
     Chat.all.each do |chat|
       if chat.users.count > 0
         chat.users.each do |user|
