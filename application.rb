@@ -32,7 +32,7 @@ enable :sessions
 
 def clean_chat_rooms
   Chat.all.each do |chat|
-    if chat.users.count > 0
+    if chat.users.size > 0 #Array.size, heroku doesn't support Array.count
       chat.users.each do |user|
         if Time.now - user.last_poll.to_time > 60
           user.destroy
