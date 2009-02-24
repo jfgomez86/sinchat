@@ -18,12 +18,12 @@ DataMapper.auto_upgrade!
 enable :sessions
 
 #unless defined?EventMachine
-  Thread.new do
-    while true
-      clean_chat_rooms
-      sleep(60)
-    end
-  end
+  #Thread.new do
+    #while true
+      #clean_chat_rooms
+      #sleep(60)
+    #end
+  #end
 #else
   #EM.add_periodic_timer(60) do
     #clean_chat_rooms
