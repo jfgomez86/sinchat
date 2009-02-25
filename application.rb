@@ -18,18 +18,21 @@ DataMapper.auto_upgrade!
 
 enable :sessions
 
-#unless defined? EM
-  Thread.new do
-    while true
-      clean_chat_rooms
-      sleep(60)
-    end
-  end
-#else
-  #EM.add_periodic_timer(60) do
-    #clean_chat_rooms
+before do
+  $timer ||= EM.add_periodic_timer(60) { clean_chat_rooms }
+end
+##unless defined? EM
+  #Thread.new do
+    #while true
+      #clean_chat_rooms
+      #sleep(60)
+    #end
   #end
-#end
+##else
+  ##EM.add_periodic_timer(60) do
+    ##clean_chat_rooms
+  ##end
+##end
 
 def clean_chat_rooms
   Chat.all.each do |chat|
