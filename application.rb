@@ -12,7 +12,7 @@ require 'helpers'
 require 'builder'
 require 'sinatra'
 
-DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///db/#{Dir.pwd}/development.sqlite3"))
+DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
 DataMapper.auto_upgrade!
 
 enable :sessions

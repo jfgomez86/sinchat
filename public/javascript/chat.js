@@ -5,6 +5,7 @@ var Chat = {
     this.interval = setInterval(this.checkForNewMessages.bind(this), this.messageTimeout);
     this.interval = setInterval(this.checkUsers.bind(this), this.userTimeout);
     $('messageForm').observe('submit', function(e) { Chat.sendMessage(); e.stop();})
+    $('soundControl').observe('click', function(e) { Chat.soundControl(e) } )
     Event.observe(window, 'load', function(e) { Chat.getNewMessages(); Chat.updateUsers(); });
     Chat.observeSmileys();
   },
@@ -102,5 +103,12 @@ var Chat = {
         $('newMessage').focus();
       }) 
     });
+  },
+
+  soundControl: function() {
+    if ($('soundControl').getValue() == "on")
+      Sound.enable();
+    else
+      Sound.disable();
   }
 }

@@ -9,19 +9,23 @@
       </li> 
     </ul>
   </div>
+  <span class="userListTitle">Personas Conectadas:</span>
   <div id="users"> 
   </div>
   <div id="messageFormContainer">
     <form action="/sendMessage" method="post" accept-charset="utf-8" id="messageForm"> 
       <label for="newMessage">Nuevo Mensaje:</label>
       <input type="text" name="newMessage" value="" id="newMessage"/>
-      <input type="submit" value="Enviar"/>
+      <input type="submit" value="Enviar" id="sendMessageButton"/>
     </form>
   </div>
   <div id="smileysContainer">
     <% SMILEY_TABLE.each do |k,v| %>
       <span class="smiley"><%= get_img_tag_for k %></span>
     <% end %>
+    <br />
+    <input type="checkbox" name="soundControl" id="soundControl" checked></input>
+    <span class="checkBoxText">¿Habilitar Sonido?</span>
   </div>
 </div>
 <span id="chat_id" style="display:none;"><%= @chat.name %></span>

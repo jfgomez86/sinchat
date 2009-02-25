@@ -11,6 +11,8 @@ html {
   margin: 0 auto;
   margin-top: 50px;
   padding:30px;
+  padding-top:8px;
+  padding-bottom:45px;
 }
 
 h1 {
@@ -82,7 +84,7 @@ h1 {
   position:relative;
   float:right;
   width:145px;
-  height:320px;
+  height:286px;
   background:#efefef;
   border:1px solid #000000;
   overflow:auto;
@@ -148,4 +150,36 @@ h1 {
 #smileysContainer {
   background:#adadad;
   border:2px solid #eeeeee;
+}
+
+.checkBoxText {
+  font-size: 0.7em;
+  font-weight: bold;
+  font-family: Verdana, Monaco, Arial, Times;
+  position:relative;
+  top:-3px;
+}
+
+.userListTitle {
+  font-size:0.8em; 
+  font-weight: bold;
+  font-family: Verdana, Monaco, Arial, Times;
+  height:32px;
+  width:145px;
+  background:#efefef;
+  border:1px solid #000000;
+  display:block;
+  float:right;
+}
+
+#sendMessageButton {
+  font-size: 0.8em;
+  font-family: Monaco, Lucida Console, Verdana, Comic Sans MS;
+  float:right;
+  width:100px;
+}
+
+#messageForm label {
+  font-size: 0.8em;
+  font-family: Monaco, Lucida Console, Verdana, Comic Sans MS;
 }
