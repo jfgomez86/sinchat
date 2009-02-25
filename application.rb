@@ -12,8 +12,7 @@ require 'helpers'
 require 'builder'
 require 'sinatra'
 
-#DataMapper.setup(:default, "sqlite3::memory:") 
-DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/development.sqlite3"))
+DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///db/#{Dir.pwd}/development.sqlite3"))
 DataMapper.auto_upgrade!
 
 enable :sessions
@@ -21,18 +20,6 @@ enable :sessions
 before do
   $timer ||= EM.add_periodic_timer(60) { clean_chat_rooms }
 end
-##unless defined? EM
-  #Thread.new do
-    #while true
-      #clean_chat_rooms
-      #sleep(60)
-    #end
-  #end
-##else
-  ##EM.add_periodic_timer(60) do
-    ##clean_chat_rooms
-  ##end
-##end
 
 def clean_chat_rooms
   Chat.all.each do |chat|
