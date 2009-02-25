@@ -2,10 +2,10 @@
   <div id="messagesContainer"> 
     <span id="roomNumber">Sala No. <%= @chat.id %></span>
     <ul id="messages">
-      <li class="message" id="0">
+      <li class="message" id=<%= "#{@chat.messages.last.id || 0}" %>>
         <span class="datetime"><%= Time.now %></span><br />
         <span class="from">Chat:</span>
-        <span class="messageBody">Bienvenido al Chat</span>
+        <span class="messageBody">Bienvenido al Chat! <%= get_img_tag_for "(welcome)" %></span>
       </li> 
     </ul>
   </div>

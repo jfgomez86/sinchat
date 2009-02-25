@@ -9,6 +9,7 @@ require 'models/chat'
 require 'models/message'
 require 'models/user'
 require 'helpers'
+require 'builder'
 require 'sinatra'
 
 #DataMapper.setup(:default, "sqlite3::memory:") 
@@ -17,18 +18,18 @@ DataMapper.auto_upgrade!
 
 enable :sessions
 
-#unless defined? EM
+unless defined? EM
   Thread.new do
     while true
       clean_chat_rooms
       sleep(60)
     end
   end
-#else
-  #EM.add_periodic_timer(60) do
-    #clean_chat_rooms
-  #end
-#end
+else
+  EM.add_periodic_timer(60) do
+    clean_chat_rooms
+  end
+end
 
 def clean_chat_rooms
   Chat.all.each do |chat|
@@ -108,4 +109,30 @@ end
 post '/chat/logout' do
   @user = User.get(session[:user_id])
   @user.destroy
+end
+
+get '/chat/:name/new_messages/:message_id' do
+  content_type 'application/xml', :charset => 'utf-8'
+  @from_message = params[:message_id].to_i
+  @chat = Chat.first(:name => params[:name])
+  @last_message_id = @chat.messages.last.id
+  new_messages = @last_message_id - @from_message
+  builder do |xml|
+    xml.instruct! :xml, :version => '1.0' 
+    xml.messages do 
+      xml.new_messages(new_messages)
+    end
+  end
+end
+
+get '/chat/:name/checkusers/' do
+  content_type 'application/xml', :charset => 'utf-8'
+  @chat = Chat.first(:name => params[:name])
+  @user_count = @chat.users.size
+  builder do |xml|
+    xml.instruct! :xml, :version => '1.0' 
+    xml.users do 
+      xml.user_count(@user_count)
+    end
+  end
 end
