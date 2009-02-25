@@ -18,6 +18,11 @@
       <input type="submit" value="Enviar"/>
     </form>
   </div>
+  <div id="smileysContainer">
+    <% SMILEY_TABLE.each do |k,v| %>
+      <span class="smiley"><%= get_img_tag_for k %></span>
+    <% end %>
+  </div>
 </div>
 <span id="chat_id" style="display:none;"><%= @chat.name %></span>
 <script type="text/javascript" language="javascript" charset="utf-8">

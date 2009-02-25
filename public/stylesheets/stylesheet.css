@@ -59,7 +59,7 @@ h1 {
 
 #application {
   width:650px;
-  height:350px;
+  height:480px;
   position:relative;
   left:-100px;
 }
@@ -143,4 +143,9 @@ h1 {
 
 .messageBody {
   font-size:14px;
+}
+
+#smileysContainer {
+  background:#adadad;
+  border:2px solid #eeeeee;
 }

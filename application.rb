@@ -102,7 +102,6 @@ get '/chat/:name/users' do
   @chat = Chat.first(:name => params[:name])
   @users = @chat.users
   @user = User.get(session[:user_id])
-  @user.update_attributes(:last_poll => Time.now)
   erb :users, :layout => false
 end
 
@@ -129,6 +128,8 @@ get '/chat/:name/checkusers/' do
   content_type 'application/xml', :charset => 'utf-8'
   @chat = Chat.first(:name => params[:name])
   @user_count = @chat.users.size
+  @user = User.get(session[:user_id])
+  @user.update_attributes(:last_poll => Time.now)
   builder do |xml|
     xml.instruct! :xml, :version => '1.0' 
     xml.users do 

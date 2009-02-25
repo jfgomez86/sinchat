@@ -6,6 +6,7 @@ var Chat = {
     this.interval = setInterval(this.checkUsers.bind(this), this.userTimeout);
     $('messageForm').observe('submit', function(e) { Chat.sendMessage(); e.stop();})
     Event.observe(window, 'load', function(e) { Chat.getNewMessages(); Chat.updateUsers(); });
+    Chat.observeSmileys();
   },
 
   getNewMessages: function() {
@@ -92,6 +93,14 @@ var Chat = {
   playSound: function() {
     wav_url = "/misc/new_message.mp3"
     Sound.play(wav_url,{replace:true});
-  }
+  },
 
+  observeSmileys: function() {
+    $$('.smiley').map(function (e) { 
+      Event.observe(e, 'click', function() { 
+        $('newMessage').value += e.firstChild.title; 
+        $('newMessage').focus();
+      }) 
+    });
+  }
 }
